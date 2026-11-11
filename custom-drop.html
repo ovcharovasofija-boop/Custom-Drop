@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Drop — Кастомізація та індивідуальний дизайн взуття</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#00D2FF',
+                            electric: '#0A84FF',
+                            deepBlue: '#0052CC',
+                            dark: '#0F172A',
+                            grayBg: '#F8FAFC',
+                            accentCyan: '#06B6D4'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1E293B;
+            background-color: #FAFAFA;
+        }
+        .step-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        .glow-effect:hover {
+            box-shadow: 0 14px 28px rgba(10, 132, 255, 0.25), 0 10px 10px rgba(0, 210, 255, 0.15);
+        }
+        .neon-border {
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+        /* Fallback for Tailwind v4-only utility used in markup */
+        .shadow-xs {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        /* Fade-in animation used by the modal */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out both;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Header Block -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo matching custom drop style with blue theme -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+                    <img src="assets/custom-drop-logo.png" alt="Custom Drop" class="w-full h-full object-cover rounded-full">
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black tracking-tight text-slate-900 leading-none">CUSTOM<span class="text-sky-500">DROP</span></span>
+                    <span class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mt-0.5">SNEAKER ART STUDIO</span>
+                </div>
+            </a>
+
+            <!-- Right Contacts & Language Switcher -->
+            <div class="flex items-center space-x-4">
+                <!-- Instagram Link -->
+                <a href="https://instagram.com/_custom_drop_" target="_blank" rel="noopener noreferrer" class="flex items-center text-xs font-semibold text-gray-700 hover:text-sky-500 transition-colors gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full">
+                    <i class="fa-brands fa-instagram text-sky-500 text-sm"></i>
+                    <span>@_custom_drop_</span>
+                </a>
+                
+                <!-- Flags / Lang -->
+                <div class="flex items-center space-x-1.5 bg-gray-100 p-1 rounded-lg text-xs">
+                    <button type="button" id="langUk" onclick="setLanguage('uk')" class="px-2 py-0.5 rounded bg-white font-bold text-gray-800 shadow-xs flex items-center gap-1" title="Українська">
+                        <span class="text-sm">🇺🇦</span> UA
+                    </button>
+                    <button type="button" id="langEn" onclick="setLanguage('en')" class="px-2 py-0.5 rounded text-gray-500 hover:text-gray-900 flex items-center gap-1" title="English">
+                        <span class="text-sm">🇬🇧</span> EN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-12 px-4 bg-gradient-to-b from-slate-900 via-sky-950 to-slate-900 text-white text-center relative overflow-hidden">
+        <div class="max-w-3xl mx-auto relative z-10">
+            <span class="inline-block px-3 py-1 bg-sky-950/80 text-cyan-300 rounded-full text-xs font-semibold tracking-wide uppercase mb-4 border border-cyan-500/30 shadow-sm">
+                🌱 Екологічний кастом & AI-дизайн
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                Створи свій <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500">унікальний стиль</span> взуття за 2 хвилини
+            </h1>
+            <p class="text-base sm:text-lg text-slate-300 mb-8 max-w-xl mx-auto font-normal">
+                Більше жодної сірості мас-маркету. Даруємо нове життя вашим кросівкам або створюємо ексклюзивну пару з нуля з гарантією стійкості покриття.
+            </p>
+
+            <div class="flex items-center justify-center">
+                <button onclick="openQuizModal()" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-white font-bold rounded-2xl shadow-lg hover:opacity-95 transition-all glow-effect flex items-center justify-center gap-2 text-base border border-cyan-300/30">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Створити дизайн через AI
+                </button>
+            </div>
+
+            <!-- Stats Badge -->
+            <div class="mt-10 grid grid-cols-3 gap-2 max-w-lg mx-auto pt-6 border-t border-slate-800 text-center">
+                <div>
+                    <div class="text-xl sm:text-2xl font-bold text-cyan-400">78%</div>
+                    <div class="text-[11px] text-slate-400">прагнуть унікальності</div>
+                </div>
+                <div>
+                    <div class="text-xl sm:text-2xl font-bold text-cyan-400">100%</div>
+                    <div class="text-[11px] text-slate-400">ручна деталізація</div>
+                </div>
+                <div>
+                    <div class="text-xl sm:text-2xl font-bold text-cyan-400">ЦСР №12</div>
+                    <div class="text-[11px] text-slate-400">сталий розвиток</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Це просто, як 1 • 2 • 3 -->
+    <section id="how-it-works" class="py-14 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Це просто, як <span class="text-sky-500">1 • 2 • 3</span></h2>
+                <p class="text-gray-500 text-sm mt-2">Від вашої ідеї до готової унікальної пари у вас в руках</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 relative group hover:border-sky-300 transition-all step-shadow">
+                    <div class="w-14 h-14 bg-white text-sky-500 font-extrabold text-xl rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform">
+                        1.
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Дизайн & AI-Квіз</h3>
+                    <p class="text-xs text-gray-600 leading-relaxed mb-4">
+                        Зробіть унікальний дизайн свого взуття за допомогою онлайн-конструктора та нашого AI-тесту стилю за 2 хвилини.
+                    </p>
+                    <div class="w-full bg-white rounded-xl p-3 shadow-xs border border-gray-100 flex items-center justify-center">
+                        <i class="fa-solid fa-laptop-code text-sky-500 text-3xl"></i>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 relative group hover:border-sky-300 transition-all step-shadow">
+                    <div class="w-14 h-14 bg-white text-sky-500 font-extrabold text-xl rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform">
+                        2.
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Виробництво</h3>
+                    <p class="text-xs text-gray-600 leading-relaxed mb-4">
+                        Ми робимо кастом за вашим дизайном та точними розмірами стопи протягом 5–7 робочих днів.
+                    </p>
+                    <div class="w-full bg-white rounded-xl p-3 shadow-xs border border-gray-100 flex items-center justify-center">
+                        <i class="fa-solid fa-hands-holding-child text-sky-500 text-3xl"></i>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 relative group hover:border-sky-300 transition-all step-shadow">
+                    <div class="w-14 h-14 bg-white text-sky-500 font-extrabold text-xl rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform">
+                        3.
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Доставка</h3>
+                    <p class="text-xs text-gray-600 leading-relaxed mb-4">
+                        Дбайливо пакуємо та відправляємо ваші Custom Drop кросівки у найближче відділення Нової Пошти.
+                    </p>
+                    <div class="w-full bg-white rounded-xl p-3 shadow-xs border border-gray-100 flex items-center justify-center">
+                        <i class="fa-solid fa-box-open text-sky-500 text-3xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Callout inside Steps -->
+            <div class="mt-10 text-center">
+                <button onclick="openQuizModal()" class="px-6 py-3 bg-slate-900 text-white rounded-xl text-sm font-semibold hover:bg-sky-600 transition-colors inline-flex items-center gap-2 shadow-md">
+                    <i class="fa-solid fa-play text-xs"></i> Поближче до розробки ескізу
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Що ми пропонуємо? (Feature Cards) -->
+    <section class="py-14 px-4 bg-slate-50">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Що ми пропонуємо?</h2>
+                <p class="text-gray-500 text-sm mt-1">Чому клієнти обирають індивідуальну кастомізацію від Custom Drop</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs hover:shadow-md transition-shadow text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-sky-50 text-sky-500 flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-compass-drafting"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">Власний дизайн</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Модель розбита на ключові зони. Для кожної можна обрати колір, принт чи фактуру в нашому інтерактивному конструкторі.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs hover:shadow-md transition-shadow text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-ruler-combined"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">Індивідуальний підхід</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Ми враховуємо 4 основні параметри вашої ноги для максимального комфорту, або адаптуємо дизайн під вашу улюблену пару.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs hover:shadow-md transition-shadow text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-hand-sparkles"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">100% Handmade</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Кожну пару художники розписують вручну спеціальними стійкими акриловими фарбами з фінальним захисним лакуванням.
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs hover:shadow-md transition-shadow text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">Якісні матеріали</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Натуральна шкіра, професійні ґрунтовки та амортизуюча підошва EVA гарантують довговічність та легкість кожного кроку.
+                    </p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs hover:shadow-md transition-shadow text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">Безпечна покупка онлайн</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Погодження 3D-макету та ескізу ДО оплати. Гарантія відповідності розміру та стійкості фарби.
+                    </p>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs hover:shadow-md transition-shadow text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">Швидкість та зручність</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Оптимізований процес виготовлення дає змогу виготовити кастом всього за тиждень без зайвих поїздок на примірки.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Sustainability / Green Note (Друге життя взуття) -->
+    <section class="py-12 px-4 bg-slate-900 text-white relative">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <span class="bg-cyan-950 text-cyan-300 border border-cyan-800 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-semibold">
+                    🌱 Сталий розвиток (ЦСР №12)
+                </span>
+                <h3 class="text-xl sm:text-2xl font-bold">Дай друге життя своїй улюбленій парі!</h3>
+                <p class="text-xs sm:text-sm text-slate-300 max-w-xl">
+                    77.8% нашої аудиторії підтримують оновлення наявного взуття замість купівлі нового. Надішли нам свої кросівки — ми перетворимо їх на арт-об'єкт та збережемо ресурси планети.
+                </p>
+            </div>
+            <button onclick="openQuizModal('update_existing')" class="whitespace-nowrap px-6 py-3 bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs sm:text-sm hover:bg-cyan-300 transition-colors shadow-lg">
+                Оновити моє взуття
+            </button>
+        </div>
+    </section>
+
+    <!-- SECTION: Від засновників Custom Drop -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-3xl mx-auto">
+            <div class="border border-gray-200 rounded-3xl p-6 sm:p-10 relative bg-gradient-to-b from-white to-slate-50 shadow-sm">
+                
+                <div class="text-center mb-8">
+                    <h2 class="text-xl sm:text-2xl font-light text-gray-800 tracking-wide">
+                        Від засновників <span class="font-extrabold text-slate-900">Custom Drop</span> в Україні
+                    </h2>
+                    <div class="w-12 h-0.5 bg-sky-500 mx-auto mt-3"></div>
+                </div>
+
+                <!-- Founder Profile / Content -->
+                <div class="flex flex-col items-center text-center">
+                    <div class="relative mb-6">
+                        <!-- Custom Drop Blue Neon Brain & Sneaker Logo Emblem -->
+                        <div class="w-36 h-36 rounded-full p-1 bg-gradient-to-tr from-cyan-400 via-sky-500 to-blue-700 shadow-xl neon-border flex items-center justify-center">
+                            <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center overflow-hidden relative border-2 border-cyan-400">
+                                <img src="assets/custom-drop-logo.png" alt="Custom Drop — емблема з мозком та кросівком" class="w-full h-full object-cover rounded-full">
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="text-xs sm:text-sm text-gray-600 italic leading-relaxed max-w-xl mb-6">
+                        «Custom Drop — це не просто український проект індивідуального кастому! Цим стартапом ми прагнемо надати кожному можливість стати автором власного стилю. Ми знімаємо бар'єр "не вмію малювати" за допомогою AI та робимо якісний кастом доступним і передбачуваним за ціною.»
+                    </blockquote>
+
+                    <div class="text-xs font-semibold text-gray-900">
+                        Софія Овчарова & Софія Майстренко
+                    </div>
+                    <div class="text-[11px] text-gray-400">
+                        Засновниці проекту Youthquake Custom Drop
+                    </div>
+                </div>
+
+                <!-- Partner logos footer inside card -->
+                <div class="mt-8 pt-6 border-t border-gray-100 flex flex-wrap justify-center items-center gap-4 text-gray-400 text-[10px] uppercase font-medium">
+                    <span>За підтримки: European Union</span> • <span>Дія.Бізнес</span> • <span>UNICEF</span> • <span>Youthquake</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-gray-400 py-10 px-4 text-xs border-t border-slate-900">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div class="flex flex-col items-center sm:items-start space-y-1">
+                <div class="text-white font-black text-base tracking-wider">
+                    CUSTOM<span class="text-sky-400">DROP</span>
+                </div>
+                <p class="text-slate-500">© 2026 Custom Drop Ukraine. Всі права захищені.</p>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="https://instagram.com/_custom_drop_" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-white transition-colors bg-slate-900 px-4 py-2 rounded-xl text-xs font-medium border border-slate-800">
+                    <i class="fa-brands fa-instagram text-sky-400 text-base"></i>
+                    <span>@_custom_drop_</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- MODAL: AI Quiz & Interactive Designer -->
+    <div id="quizModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 overflow-y-auto">
+        <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden relative my-auto animate-fade-in">
+            
+            <!-- Modal Header -->
+            <div class="bg-gray-900 text-white p-5 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400 text-lg"></i>
+                    <h3 class="font-bold text-base">AI-Конструктор Свого Стилю</h3>
+                </div>
+                <button onclick="closeQuizModal()" class="text-gray-400 hover:text-white text-xl p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Quiz Steps Container -->
+            <div class="p-6">
+                
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-100 h-2 rounded-full mb-6 overflow-hidden">
+                    <div id="quizProgress" class="bg-gradient-to-r from-cyan-500 to-blue-600 h-full w-1/3 transition-all duration-300"></div>
+                </div>
+
+                <form id="quizForm" onsubmit="handleQuizSubmit(event)">
+                    
+                    <!-- STEP 1: Basis selection -->
+                    <div id="step1" class="quiz-step space-y-4">
+                        <div class="text-center">
+                            <span class="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Крок 1 з 3</span>
+                            <h4 class="text-lg font-bold text-gray-900 mt-1">Оберіть основу для кастому:</h4>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <label class="cursor-pointer border-2 border-gray-100 rounded-2xl p-4 text-center hover:border-sky-400 transition-all flex flex-col items-center group">
+                                <input type="radio" name="base_type" value="new_pair" class="sr-only" checked onchange="updateStep1Selection(this)">
+                                <div class="w-12 h-12 rounded-full bg-sky-50 text-sky-500 flex items-center justify-center text-xl mb-2 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-box font-bold"></i>
+                                </div>
+                                <span class="font-bold text-xs text-gray-800">Нова пара від нас</span>
+                                <span class="text-[10px] text-gray-400 mt-1">Шкіра + підошва EVA</span>
+                            </label>
+
+                            <label class="cursor-pointer border-2 border-gray-100 rounded-2xl p-4 text-center hover:border-sky-400 transition-all flex flex-col items-center group">
+                                <input type="radio" name="base_type" value="my_pair" class="sr-only" onchange="updateStep1Selection(this)">
+                                <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-2 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-recycle"></i>
+                                </div>
+                                <span class="font-bold text-xs text-gray-800">Моя пара взуття</span>
+                                <span class="text-[10px] text-emerald-600 font-semibold mt-1">🌱 Еко-відновлення</span>
+                            </label>
+                        </div>
+
+                        <button type="button" onclick="nextQuizStep(2)" class="w-full mt-4 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold rounded-xl text-sm shadow-md hover:opacity-95 transition-all">
+                            Далі: Вибір стилю <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+
+                    <!-- STEP 2: Interactive Color & Style Generator -->
+                    <div id="step2" class="quiz-step hidden space-y-4">
+                        <div class="text-center">
+                            <span class="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Крок 2 з 3</span>
+                            <h4 class="text-lg font-bold text-gray-900 mt-1">Налаштуйте AI-Дизайн:</h4>
+                        </div>
+
+                        <!-- Sneaker Preview Box -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col items-center justify-center relative">
+                            <div class="w-full h-36 flex items-center justify-center relative">
+                                <!-- Dynamic SVG Sneaker Placeholder with Cyan Default -->
+                                <svg id="sneakerSvg" class="w-48 h-32 transition-colors duration-300" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 80 C20 80 40 40 90 40 C120 40 140 30 160 50 C180 70 185 85 185 85 L20 85 Z" id="sneakerBody" fill="#0F172A" stroke="#00D2FF" stroke-width="3"/>
+                                    <path d="M15 85 L190 85 L185 100 L20 100 Z" id="sneakerSole" fill="#0A84FF" />
+                                    <path d="M70 42 L95 65" stroke="#00D2FF" stroke-width="4" stroke-linecap="round" id="sneakerAccent"/>
+                                    <circle cx="140" cy="55" r="8" fill="#38BDF8" id="sneakerLogo"/>
+                                </svg>
+                            </div>
+                            <span class="text-[10px] text-cyan-300/60 italic">Інтерактивний макет вашого кастому</span>
+                        </div>
+
+                        <!-- Style presets -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-2">Оберіть тему принту:</label>
+                            <select id="stylePreset" onchange="applyStylePreset(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500">
+                                <option value="cyberpunk">Неоновий Стріт-Арт (Custom Drop Classic)</option>
+                                <option value="anime">Аніме & Манга Сплав</option>
+                                <option value="minimal">Абстрактна Геометрія & Мінімалізм</option>
+                                <option value="vintage">Ретро & Ворн-аут Ефект</option>
+                            </select>
+                        </div>
+
+                        <!-- Color pickers -->
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-500 mb-1">Основний</label>
+                                <input type="color" id="primaryColor" value="#0F172A" onchange="updateSneakerColor()" class="w-full h-8 rounded-lg cursor-pointer border-0">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-500 mb-1">Акцент</label>
+                                <input type="color" id="accentColor" value="#00D2FF" onchange="updateSneakerColor()" class="w-full h-8 rounded-lg cursor-pointer border-0">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-gray-500 mb-1">Підошва</label>
+                                <input type="color" id="soleColor" value="#0A84FF" onchange="updateSneakerColor()" class="w-full h-8 rounded-lg cursor-pointer border-0">
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 pt-2">
+                            <button type="button" onclick="nextQuizStep(1)" class="w-1/3 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl text-xs hover:bg-gray-200">
+                                Назад
+                            </button>
+                            <button type="button" onclick="nextQuizStep(3)" class="w-2/3 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold rounded-xl text-xs shadow-md hover:opacity-95">
+                                Отримати 3D-макет <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: Contact Form for Free Mockup -->
+                    <div id="step3" class="quiz-step hidden space-y-4">
+                        <div class="text-center">
+                            <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Майже готово!</span>
+                            <h4 class="text-lg font-bold text-gray-900 mt-1">Куди надіслати готовий макет?</h4>
+                            <p class="text-xs text-gray-500">Ми безкоштовно підготуємо точний ескіз та розрахунок вартості протягом 15 хвилин.</p>
+                        </div>
+
+                        <div class="space-y-3 pt-2">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1">Ваше ім'я</label>
+                                <input type="text" required placeholder="Софія" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1">Номер телефону / Telegram</label>
+                                <input type="tel" required placeholder="+38 (067) 000 00 00" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1">Коментар або побажання (опціонально)</label>
+                                <textarea rows="2" placeholder="Наприклад: хочу принт з улюбленим персонажем..." class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 pt-2">
+                            <button type="button" onclick="nextQuizStep(2)" class="w-1/3 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl text-xs hover:bg-gray-200">
+                                Назад
+                            </button>
+                            <button type="submit" class="w-2/3 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold rounded-xl text-xs shadow-lg hover:opacity-95">
+                                Отримати макет <i class="fa-solid fa-paper-plane ml-1"></i>
+                            </button>
+                        </div>
+
+                        <p class="text-[10px] text-gray-400 text-center">
+                            🔒 Ваші дані захищені. Жодного спаму, лише макет вашого взуття.
+                        </p>
+                    </div>
+
+                </form>
+
+                <!-- Success Screen -->
+                <div id="quizSuccess" class="hidden text-center py-8 space-y-4">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-2">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900">Заявку успішно прийнято!</h4>
+                    <p class="text-xs text-gray-600 max-w-sm mx-auto">
+                        Дякуємо! Наш дизайнер вже створює 3D-ескіз вашої пари. Ми зв'яжемося з вами у Telegram/Viber найближчим часом.
+                    </p>
+                    <button onclick="closeQuizModal()" class="px-6 py-2.5 bg-gray-900 text-white font-semibold rounded-xl text-xs hover:bg-gray-800">
+                        Закрити
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Modal State Controls
+        function openQuizModal(mode) {
+            const modal = document.getElementById('quizModal');
+            modal.classList.remove('hidden');
+            if (mode === 'update_existing') {
+                const myPairRadio = document.querySelector('input[value="my_pair"]');
+                if (myPairRadio) {
+                    myPairRadio.checked = true;
+                }
+            }
+            updateStep1Selection();
+        }
+
+        function closeQuizModal() {
+            const modal = document.getElementById('quizModal');
+            modal.classList.add('hidden');
+            // Reset quiz to step 1 after delay
+            setTimeout(() => {
+                nextQuizStep(1);
+                document.getElementById('quizForm').classList.remove('hidden');
+                document.getElementById('quizSuccess').classList.add('hidden');
+            }, 300);
+        }
+
+        // Quiz Step Navigator
+        function nextQuizStep(stepNumber) {
+            document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`step${stepNumber}`).classList.remove('hidden');
+            
+            // Update progress bar
+            const progress = document.getElementById('quizProgress');
+            if (stepNumber === 1) progress.style.width = '33%';
+            if (stepNumber === 2) progress.style.width = '66%';
+            if (stepNumber === 3) progress.style.width = '100%';
+        }
+
+        // Live SVG Sneaker Color Updater
+        function updateSneakerColor() {
+            const primary = document.getElementById('primaryColor').value;
+            const accent = document.getElementById('accentColor').value;
+            const sole = document.getElementById('soleColor').value;
+
+            document.getElementById('sneakerBody').setAttribute('fill', primary);
+            document.getElementById('sneakerBody').setAttribute('stroke', accent);
+            document.getElementById('sneakerAccent').setAttribute('stroke', accent);
+            document.getElementById('sneakerLogo').setAttribute('fill', accent);
+            document.getElementById('sneakerSole').setAttribute('fill', sole);
+        }
+
+        // Highlights the selected base option in step 1
+        function updateStep1Selection() {
+            document.querySelectorAll('input[name="base_type"]').forEach(radio => {
+                const label = radio.closest('label');
+                if (!label) return;
+                if (radio.checked) {
+                    label.classList.add('border-sky-500', 'bg-sky-50/40');
+                    label.classList.remove('border-gray-100');
+                } else {
+                    label.classList.remove('border-sky-500', 'bg-sky-50/40');
+                    label.classList.add('border-gray-100');
+                }
+            });
+        }
+
+        // Style Presets Preset Selector
+        function applyStylePreset(preset) {
+            if (preset === 'anime') {
+                document.getElementById('primaryColor').value = '#FEE2E2';
+                document.getElementById('accentColor').value = '#EF4444';
+                document.getElementById('soleColor').value = '#111827';
+            } else if (preset === 'minimal') {
+                document.getElementById('primaryColor').value = '#F3F4F6';
+                document.getElementById('accentColor').value = '#9CA3AF';
+                document.getElementById('soleColor').value = '#FFFFFF';
+            } else if (preset === 'cyberpunk') {
+                document.getElementById('primaryColor').value = '#0F172A';
+                document.getElementById('accentColor').value = '#00D2FF';
+                document.getElementById('soleColor').value = '#0A84FF';
+            } else if (preset === 'vintage') {
+                document.getElementById('primaryColor').value = '#FEF3C7';
+                document.getElementById('accentColor').value = '#D97706';
+                document.getElementById('soleColor').value = '#78350F';
+            }
+            updateSneakerColor();
+        }
+
+        // Quiz Form Submit
+        function handleQuizSubmit(event) {
+            event.preventDefault();
+            document.getElementById('quizForm').classList.add('hidden');
+            document.getElementById('quizSuccess').classList.remove('hidden');
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('quizModal');
+            if (event.target === modal) {
+                closeQuizModal();
+            }
+        }
+
+        // Sync UI with the initial state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStep1Selection();
+            updateSneakerColor();
+        });
+    </script>
+
+    <!-- Language Switcher (UA / EN) -->
+    <script>
+        const UK_TITLE = "Custom Drop — Кастомізація та індивідуальний дизайн взуття";
+        const EN_TITLE = "Custom Drop — Customization and individual footwear design";
+
+        // Ukrainian text node -> English translation
+        const EN_TRANSLATIONS = {
+            "SNEAKER ART STUDIO": "SNEAKER ART STUDIO",
+            "🌱 Екологічний кастом & AI-дизайн": "🌱 Eco-friendly custom & AI design",
+            "Створи свій": "Create your",
+            "унікальний стиль": "unique style",
+            "взуття за 2 хвилини": "footwear in 2 minutes",
+            "Більше жодної сірості мас-маркету. Даруємо нове життя вашим кросівкам або створюємо ексклюзивну пару з нуля з гарантією стійкості покриття.": "No more mass-market greyness. We give your sneakers a second life or create an exclusive pair from scratch, with a durability guarantee on the finish.",
+            "Створити дизайн через AI": "Create a design with AI",
+            "прагнуть унікальності": "want to stand out",
+            "ручна деталізація": "hand detailing",
+            "ЦСР №12": "SDG №12",
+            "сталий розвиток": "sustainable development",
+            "Це просто, як": "It is as simple as",
+            "Від вашої ідеї до готової унікальної пари у вас в руках": "From your idea to a unique finished pair in your hands",
+            "Дизайн & AI-Квіз": "Design & AI Quiz",
+            "Зробіть унікальний дизайн свого взуття за допомогою онлайн-конструктора та нашого AI-тесту стилю за 2 хвилини.": "Build a unique design for your footwear with our online constructor and AI style test in 2 minutes.",
+            "Виробництво": "Production",
+            "Ми робимо кастом за вашим дизайном та точними розмірами стопи протягом 5–7 робочих днів.": "We create the custom pair to your design and exact foot measurements within 5–7 business days.",
+            "Доставка": "Delivery",
+            "Дбайливо пакуємо та відправляємо ваші Custom Drop кросівки у найближче відділення Нової Пошти.": "We pack your Custom Drop sneakers with care and ship them to the nearest Nova Poshta branch.",
+            "Поближче до розробки ескізу": "Closer to your first sketch",
+            "Що ми пропонуємо?": "What we offer",
+            "Чому клієнти обирають індивідуальну кастомізацію від Custom Drop": "Why clients choose individual customization from Custom Drop",
+            "Власний дизайн": "Your own design",
+            "Модель розбита на ключові зони. Для кожної можна обрати колір, принт чи фактуру в нашому інтерактивному конструкторі.": "The model is split into key zones. For each zone you can choose a colour, a print or a texture in our interactive constructor.",
+            "Індивідуальний підхід": "Individual approach",
+            "Ми враховуємо 4 основні параметри вашої ноги для максимального комфорту, або адаптуємо дизайн під вашу улюблену пару.": "We take 4 key measurements of your foot for maximum comfort, or adapt the design to your favourite pair.",
+            "Кожну пару художники розписують вручну спеціальними стійкими акриловими фарбами з фінальним захисним лакуванням.": "Artists hand-paint every pair with special durable acrylic paints and finish it with a protective lacquer.",
+            "Якісні матеріали": "Quality materials",
+            "Натуральна шкіра, професійні ґрунтовки та амортизуюча підошва EVA гарантують довговічність та легкість кожного кроку.": "Genuine leather, professional primers and a cushioned EVA sole guarantee durability and lightness in every step.",
+            "Безпечна покупка онлайн": "Safe online purchase",
+            "Погодження 3D-макету та ескізу ДО оплати. Гарантія відповідності розміру та стійкості фарби.": "The 3D mock-up and sketch are approved BEFORE payment. We guarantee size accuracy and paint durability.",
+            "Швидкість та зручність": "Speed and convenience",
+            "Оптимізований процес виготовлення дає змогу виготовити кастом всього за тиждень без зайвих поїздок на примірки.": "An optimized production process lets us make a custom pair in just a week, with no extra trips to fittings.",
+            "🌱 Сталий розвиток (ЦСР №12)": "🌱 Sustainable development (SDG №12)",
+            "Дай друге життя своїй улюбленій парі!": "Give your favourite pair a second life!",
+            "77.8% нашої аудиторії підтримують оновлення наявного взуття замість купівлі нового. Надішли нам свої кросівки — ми перетворимо їх на арт-об'єкт та збережемо ресурси планети.": "77.8% of our audience supports renewing existing footwear instead of buying new. Send us your sneakers — we will turn them into an art piece and save the planet's resources.",
+            "Оновити моє взуття": "Renew my footwear",
+            "Від засновників": "From the founders of",
+            "в Україні": "in Ukraine",
+            [`«Custom Drop — це не просто український проект індивідуального кастому! Цим стартапом ми прагнемо надати кожному можливість стати автором власного стилю. Ми знімаємо бар'єр "не вмію малювати" за допомогою AI та робимо якісний кастом доступним і передбачуваним за ціною.»`]: `«Custom Drop is more than a Ukrainian custom footwear project! With this startup we want to give everyone the chance to become the author of their own style. We remove the "I can't draw" barrier with AI and make quality customization accessible and predictable in price.»`,
+            "Софія Овчарова & Софія Майстренко": "Sofiia Ovcharova & Sofiia Maistrenko",
+            "Засновниці проекту Youthquake Custom Drop": "Founders of the Youthquake Custom Drop project",
+            "За підтримки: European Union": "Supported by: European Union",
+            "Дія.Бізнес": "Diia.Business",
+            "© 2026 Custom Drop Ukraine. Всі права захищені.": "© 2026 Custom Drop Ukraine. All rights reserved.",
+            "AI-Конструктор Свого Стилю": "AI Constructor of Your Style",
+            "Крок 1 з 3": "Step 1 of 3",
+            "Оберіть основу для кастому:": "Choose the base for your custom:",
+            "Нова пара від нас": "A new pair from us",
+            "Шкіра + підошва EVA": "Leather + EVA sole",
+            "Моя пара взуття": "My own pair",
+            "🌱 Еко-відновлення": "🌱 Eco renewal",
+            "Далі: Вибір стилю": "Next: choose a style",
+            "Крок 2 з 3": "Step 2 of 3",
+            "Налаштуйте AI-Дизайн:": "Customize your AI design:",
+            "Інтерактивний макет вашого кастому": "Interactive mock-up of your custom pair",
+            "Оберіть тему принту:": "Choose a print theme:",
+            "Неоновий Стріт-Арт (Custom Drop Classic)": "Neon Street Art (Custom Drop Classic)",
+            "Аніме & Манга Сплав": "Anime & Manga Blend",
+            "Абстрактна Геометрія & Мінімалізм": "Abstract Geometry & Minimalism",
+            "Ретро & Ворн-аут Ефект": "Retro & Worn-out Effect",
+            "Основний": "Main",
+            "Акцент": "Accent",
+            "Підошва": "Sole",
+            "Назад": "Back",
+            "Отримати 3D-макет": "Get the 3D mock-up",
+            "Майже готово!": "Almost done!",
+            "Куди надіслати готовий макет?": "Where should we send your mock-up?",
+            "Ми безкоштовно підготуємо точний ескіз та розрахунок вартості протягом 15 хвилин.": "We will prepare an accurate sketch and a price estimate free of charge within 15 minutes.",
+            "Ваше ім'я": "Your name",
+            "Номер телефону / Telegram": "Phone number / Telegram",
+            "Коментар або побажання (опціонально)": "Comment or wishes (optional)",
+            "Отримати макет": "Get my mock-up",
+            "🔒 Ваші дані захищені. Жодного спаму, лише макет вашого взуття.": "🔒 Your data is protected. No spam — only the mock-up of your footwear.",
+            "Заявку успішно прийнято!": "Request received!",
+            "Дякуємо! Наш дизайнер вже створює 3D-ескіз вашої пари. Ми зв'яжемося з вами у Telegram/Viber найближчим часом.": "Thank you! Our designer is already working on the 3D sketch of your pair. We will contact you via Telegram/Viber shortly.",
+            "Закрити": "Close"
+        };
+
+        const EN_PLACEHOLDERS = {
+            "Софія": "Sofia",
+            "Наприклад: хочу принт з улюбленим персонажем...": "For example: I want a print with my favourite character..."
+        };
+
+        const SKIPPED_TAGS = ["SCRIPT", "STYLE"];
+        const ACTIVE_LANGUAGE_CLASSES = ["bg-white", "font-bold", "text-gray-800", "shadow-xs"];
+        const IDLE_LANGUAGE_CLASSES = ["text-gray-500", "hover:text-gray-900"];
+
+        let textPairs = [];
+        let placeholderPairs = [];
+
+        function hasTranslation(dictionary, key) {
+            return Object.prototype.hasOwnProperty.call(dictionary, key);
+        }
+
+        function collectTextPairs() {
+            const pairs = [];
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            let node = walker.nextNode();
+            while (node) {
+                const parentTag = node.parentElement ? node.parentElement.tagName : "";
+                const nodeText = node.nodeValue;
+                const key = nodeText.trim();
+                if (!SKIPPED_TAGS.includes(parentTag) && hasTranslation(EN_TRANSLATIONS, key)) {
+                    const keyStart = nodeText.indexOf(key);
+                    pairs.push({
+                        node: node,
+                        prefix: nodeText.slice(0, keyStart),
+                        suffix: nodeText.slice(keyStart + key.length),
+                        uk: key,
+                        en: EN_TRANSLATIONS[key]
+                    });
+                }
+                node = walker.nextNode();
+            }
+            return pairs;
+        }
+
+        function collectPlaceholderPairs() {
+            const pairs = [];
+            document.querySelectorAll("[placeholder]").forEach(field => {
+                const value = field.getAttribute("placeholder");
+                if (hasTranslation(EN_PLACEHOLDERS, value)) {
+                    pairs.push({ field: field, uk: value, en: EN_PLACEHOLDERS[value] });
+                }
+            });
+            return pairs;
+        }
+
+        function updateLanguageButtons(language) {
+            const ukButton = document.getElementById("langUk");
+            const enButton = document.getElementById("langEn");
+            if (!ukButton || !enButton) return;
+            const activeButton = language === "en" ? enButton : ukButton;
+            const idleButton = language === "en" ? ukButton : enButton;
+            [ukButton, enButton].forEach(button => {
+                button.classList.remove(...ACTIVE_LANGUAGE_CLASSES, ...IDLE_LANGUAGE_CLASSES);
+            });
+            activeButton.classList.add(...ACTIVE_LANGUAGE_CLASSES);
+            idleButton.classList.add(...IDLE_LANGUAGE_CLASSES);
+        }
+
+        function setLanguage(language) {
+            const isEnglish = language === "en";
+            document.documentElement.lang = isEnglish ? "en" : "uk";
+            document.title = isEnglish ? EN_TITLE : UK_TITLE;
+            textPairs.forEach(pair => {
+                pair.node.nodeValue = pair.prefix + (isEnglish ? pair.en : pair.uk) + pair.suffix;
+            });
+            placeholderPairs.forEach(pair => {
+                pair.field.setAttribute("placeholder", isEnglish ? pair.en : pair.uk);
+            });
+            updateLanguageButtons(language);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            textPairs = collectTextPairs();
+            placeholderPairs = collectPlaceholderPairs();
+            updateLanguageButtons("uk");
+        });
+    </script>
+</body>
+</html>
